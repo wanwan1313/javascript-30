@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時鐘</title>
+    <link rel="stylesheet" href="../reset.css">
+
+    <style>
+        html {
+            background: url(./imgs/062h.jpg);
+            background-size: 40%;
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .clock {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 10px solid #aff;
+            background-color: rgba(255, 255, 255, 0.2);
+            /* background: url(./imgs/087_08.png) center center no-repeat;
+            background-size: 120%; */
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .clock-face {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            position: relative;
+            transform: rotate(90deg);
+        }
+
+        .hand {
+            width: 50%;
+            height: 5px;
+            background-color: rgb(12, 51, 17);
+            border-radius: 20px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: 100%;
+            
+        }
+
+        .hour-hand {
+            background: linear-gradient(to left, rgb(12, 51, 17) 55%,transparent 45%);
+        }
+
+        .second-hand {
+            height: 1.5px;
+            background-color: rgb(71, 95, 95);
+        }
+
+        .circle {
+            width: 15px;
+            height: 15px;
+            background-color: darkorange;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            box-shadow:
+                0 0 0 4px rgba(0,0,0,0.1),
+                inset 0 0 0 1px #EFEFEF,
+                inset 0 0 10px black,
+                0 0 10px rgba(0,0,0,0.2);
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="clock">
+        <div class="clock-face">
+          <div class="hand hour-hand"></div>
+          <div class="hand min-hand"></div>
+          <div class="hand second-hand"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+    
+
+      <script>
+
+          const myHour = document.querySelector('.hour-hand')
+          const myMin = document.querySelector('.min-hand')
+          const mySecond = document.querySelector('.second-hand')
+          const allHands = document.querySelectorAll('.hand')
+
+
+          function setTime(){
+              let now = new Date
+              let thisSecond = now.getSeconds()
+              let secondDeg = (thisSecond / 60) * 360 
+              mySecond.style.transform = `rotate(${secondDeg}deg)`
+              
+              let thisMin = now.getMinutes()
+              let minDeg = (thisMin / 60) * 360 
+              myMin.style.transform = `rotate(${minDeg}deg)`
+
+              let thisHour = now.getHours()
+              //分針每12分鐘，時針走一格
+              let mintwl = Math.floor(thisMin / 12)  
+              let hourDeg = (thisHour / 12) * 360 + ( mintwl * 6)
+              myHour.style.transform = `rotate(${hourDeg}deg)`
+
+              if(secondDeg == 0 ){
+                allHands.forEach( hand => 
+                    hand.style.transition = "none"
+              )      
+              }else {
+                allHands.forEach( hand => 
+                    hand.style.transition = "all 0.05s cubic-bezier(.27,1.71,.61,1.01)"
+              )
+              }
+
+              
+
+              
+          }
+
+          setInterval(setTime,1000)
+
+          
+      </script>
+</body>
+</html>
